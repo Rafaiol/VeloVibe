@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Filter, SlidersHorizontal } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Filter, SlidersHorizontal, X, ShoppingCart, ArrowRight } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
+import Bike3DViewer from '@/components/Bike3DViewer';
 import { products, categories } from '@/data/products';
 import type { Product } from '@/data/products';
 
@@ -10,10 +11,17 @@ export default function Shop() {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const [previewColorIdx, setPreviewColorIdx] = useState(0);
 
   const filteredProducts = selectedCategory === 'all'
     ? products
     : products.filter((product: Product) => product.category === selectedCategory);
+
+  const handleClosePreview = () => {
+    setPreviewProduct(null);
+    setPreviewColorIdx(0);
+  };
 
   return (
     <motion.div
@@ -170,7 +178,12 @@ export default function Shop() {
           {/* Products Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                index={index} 
+                onSelect3D={(p) => setPreviewProduct(p)}
+              />
             ))}
           </div>
 
@@ -193,6 +206,118 @@ export default function Shop() {
           )}
         </div>
       </section>
+
+      {/* 3D Preview Modal */}
+      <AnimatePresence>
+        {previewProduct && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10"
+          >
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-charcoal/90 backdrop-blur-xl"
+              onClick={handleClosePreview}
+            />
+
+            {/* Modal Content */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-6xl bg-dark-gray border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row"
+            >
+              {/* Left - 3D Viewer */}
+              <div className="flex-1 min-h-[400px] lg:min-h-[600px] relative">
+                <Bike3DViewer color={previewProduct.colors[previewColorIdx]} />
+                
+                {/* Product Name Overlay */}
+                <div className="absolute top-8 left-8">
+                  <span className="text-orange font-display font-bold tracking-widest uppercase text-sm mb-2 block">
+                    360° Interaction
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-white">
+                    {previewProduct.name}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Right - Controls and Info */}
+              <div className="w-full lg:w-[400px] bg-white/5 p-8 lg:p-12 flex flex-col border-l border-white/10">
+                <button
+                  onClick={handleClosePreview}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors z-10"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="flex-1">
+                  <div className="mb-8">
+                    <label className="text-white/40 text-xs tracking-widest uppercase font-semibold mb-4 block">
+                      Customize Color
+                    </label>
+                    <div className="flex gap-3">
+                      {previewProduct.colors.map((color, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setPreviewColorIdx(idx)}
+                          className={`w-10 h-10 rounded-full border-2 transition-all ${
+                            previewColorIdx === idx
+                              ? 'border-orange scale-110 shadow-[0_0_15px_rgba(249,115,22,0.3)]'
+                              : 'border-white/10 hover:border-white/30'
+                          }`}
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
+                    <h4 className="text-white font-semibold mb-2">Specifications</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex justify-between">
+                        <span className="text-white/40">Frame</span>
+                        <span className="text-white/80">{previewProduct.specs.frame}</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span className="text-white/40">Weight</span>
+                        <span className="text-white/80">{previewProduct.specs.weight}</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span className="text-white/40">Drivetrain</span>
+                        <span className="text-white/80">{previewProduct.specs.drivetrain}</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <p className="text-white/60 text-sm italic mb-10">
+                    "Experience the precision engineering in every detail of the {previewProduct.name}."
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <button 
+                    onClick={() => {
+                      navigate(`/product/${previewProduct.id}`);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="w-full btn-primary bg-orange hover:bg-orange-hover text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 group/btn"
+                  >
+                    View Full Details
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                  </button>
+                  <button className="w-full bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
+                    <ShoppingCart className="w-4 h-4" />
+                    Quick Add - ${previewProduct.price.toLocaleString()}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

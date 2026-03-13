@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Box } from 'lucide-react';
 import type { Product } from '@/data/products';
 
 interface ProductCardProps {
   product: Product;
   index?: number;
+  onSelect3D?: (product: Product) => void;
 }
 
-export default function ProductCard({ product, index = 0 }: ProductCardProps) {
+export default function ProductCard({ product, index = 0, onSelect3D }: ProductCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -16,39 +17,54 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      <Link to={`/product/${product.id}`}>
-        <motion.div
-          whileHover={{ y: -8 }}
-          transition={{ duration: 0.3 }}
-          className="group bg-dark-gray rounded-2xl overflow-hidden cursor-pointer"
-        >
-          {/* Image Container */}
-          <div className="relative aspect-square bg-gradient-to-b from-gray-700/50 to-dark-gray p-6 flex items-center justify-center">
-            <motion.img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-            />
-            
-            {/* Hover Arrow */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ opacity: 1, scale: 1 }}
-              className="absolute top-4 right-4 w-10 h-10 bg-orange rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <ArrowUpRight className="w-5 h-5 text-white" />
-            </motion.div>
-          </div>
+      <div className="group relative">
+        <Link to={`/product/${product.id}`}>
+          <motion.div
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-dark-gray rounded-2xl overflow-hidden cursor-pointer"
+          >
+            {/* Image Container */}
+            <div className="relative aspect-square bg-gradient-to-b from-gray-700/50 to-dark-gray p-6 flex items-center justify-center">
+              <motion.img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+              />
+              
+              {/* Hover Arrow */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileHover={{ opacity: 1, scale: 1 }}
+                className="absolute top-4 right-4 w-10 h-10 bg-orange rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <ArrowUpRight className="w-5 h-5 text-white" />
+              </motion.div>
+            </div>
 
-          {/* Content */}
-          <div className="p-5">
-            <h3 className="text-white font-semibold text-lg mb-1 line-clamp-2 group-hover:text-orange transition-colors">
-              {product.name}
-            </h3>
-            <p className="text-white/60 text-sm">{product.price.toLocaleString()} $</p>
-          </div>
-        </motion.div>
-      </Link>
+            {/* Content */}
+            <div className="p-5">
+              <h3 className="text-white font-semibold text-lg mb-1 line-clamp-2 group-hover:text-orange transition-colors">
+                {product.name}
+              </h3>
+              <p className="text-white/60 text-sm">{product.price.toLocaleString()} $</p>
+            </div>
+          </motion.div>
+        </Link>
+        
+        {/* 3D View Button - Floating */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onSelect3D?.(product);
+          }}
+          className="absolute bottom-24 right-4 w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-orange hover:border-orange transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 shadow-xl"
+          title="View in 3D"
+        >
+          <Box className="w-5 h-5" />
+        </button>
+      </div>
     </motion.div>
   );
 }

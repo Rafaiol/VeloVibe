@@ -6,7 +6,7 @@ import { categories } from '@/data/products';
 export default function Gallery() {
   const navigate = useNavigate();
 
-  const handleCategoryClick = (_categoryId: string) => {
+  const handleCategoryClick = () => {
     navigate('/shop');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -41,7 +41,7 @@ export default function Gallery() {
               <motion.div
                 whileHover={{ y: -10 }}
                 transition={{ duration: 0.3 }}
-                onClick={() => handleCategoryClick(category.id)}
+                onClick={handleCategoryClick}
                 className="group relative rounded-2xl overflow-hidden cursor-pointer aspect-[4/5]"
               >
                 {/* Image */}

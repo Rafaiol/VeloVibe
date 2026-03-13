@@ -36,7 +36,7 @@ export const products: Product[] = [
     reviews: 128,
     image: '/bikes/mountain-bike.png',
     description: 'The Stumpjumper EVO is a testament to full-gas trail performance. With its dialed geometry, plush suspension, and unmatched versatility, this bike is ready to tackle any trail you throw at it.',
-    colors: ['#C0C0C0', '#1A1A1A', '#F97316'],
+    colors: ['#F5F0E8', '#1A1A1A', '#F97316'],
     specs: {
       frame: 'FACT 11m Carbon',
       fork: 'Fox Float 38 Performance Elite',
@@ -61,7 +61,7 @@ export const products: Product[] = [
     reviews: 96,
     image: '/bikes/hero-bike.png',
     description: 'The Turbo Vado SL is a lightweight electric bike that delivers a natural riding experience with just the right amount of power to make your ride easier and more enjoyable.',
-    colors: ['#1A1A1A', '#F97316', '#FFFFFF'],
+    colors: ['#1A1A1A', '#F97316', '#F5F0E8'],
     specs: {
       frame: 'E5 Aluminum',
       fork: 'Future Shock 1.5',
@@ -85,7 +85,7 @@ export const products: Product[] = [
     reviews: 156,
     image: '/bikes/road-bike.png',
     description: 'The Tarmac SL8 is the culmination of decades of racing expertise. With unmatched aerodynamics, lightweight construction, and razor-sharp handling, this is the ultimate race machine.',
-    colors: ['#FFD700', '#1A1A1A', '#C0C0C0'],
+    colors: ['#F97316', '#1A1A1A', '#F5F0E8'],
     specs: {
       frame: 'FACT 12r Carbon',
       fork: 'S-Works FACT Carbon',
@@ -110,7 +110,7 @@ export const products: Product[] = [
     reviews: 84,
     image: '/bikes/city-bike.png',
     description: 'The Sirrus X is your ticket to riding more. Comfortable, efficient, and versatile, this bike is perfect for commuting, fitness rides, or just exploring your city.',
-    colors: ['#1A1A1A', '#4B5563', '#F97316'],
+    colors: ['#1A1A1A', '#2D2D2D', '#F97316'],
     specs: {
       frame: 'A1 Premium Aluminum',
       fork: 'Steel',
@@ -135,7 +135,7 @@ export const products: Product[] = [
     reviews: 72,
     image: '/bikes/mountain-bike.png',
     description: 'The Rockhopper is the perfect entry into mountain biking. With reliable components and a capable geometry, this bike will have you exploring trails in no time.',
-    colors: ['#C0C0C0', '#1A1A1A', '#228B22'],
+    colors: ['#F5F0E8', '#1A1A1A', '#F97316'],
     specs: {
       frame: 'A1 Aluminum',
       fork: 'SR Suntour XCM',
@@ -160,7 +160,7 @@ export const products: Product[] = [
     reviews: 112,
     image: '/bikes/road-bike.png',
     description: 'The Allez Sprint is the fastest alloy road bike ever made. With aerodynamic tube shaping and race-ready geometry, this bike delivers pro-level performance at an accessible price.',
-    colors: ['#FFD700', '#1A1A1A', '#DC143C'],
+    colors: ['#F97316', '#1A1A1A', '#F97316'],
     specs: {
       frame: 'E5 Premium Aluminum',
       fork: 'FACT Carbon',
@@ -185,7 +185,7 @@ export const products: Product[] = [
     reviews: 88,
     image: '/bikes/road-bike.png',
     description: 'The Diverge is the ultimate gravel bike. With massive tire clearance, Future Shock suspension, and versatile geometry, this bike can handle any road or trail you encounter.',
-    colors: ['#1A1A1A', '#8B4513', '#2F4F4F'],
+    colors: ['#1A1A1A', '#1A1A1A', '#2D2D2D'],
     specs: {
       frame: 'FACT 9r Carbon',
       fork: 'Future Shock 1.5',
@@ -210,7 +210,7 @@ export const products: Product[] = [
     reviews: 45,
     image: '/bikes/mountain-bike.png',
     description: 'The Riprock is the perfect bike for young riders to develop their skills. With wide tires for stability and confidence-inspiring geometry, kids will love exploring on this bike.',
-    colors: ['#FF6B6B', '#4ECDC4', '#95E1D3'],
+    colors: ['#F97316', '#1A1A1A', '#F5F0E8'],
     specs: {
       frame: 'A1 Aluminum',
       fork: 'Rigid Steel',
@@ -233,7 +233,7 @@ export const products: Product[] = [
     reviews: 62,
     image: '/bikes/city-bike.png',
     description: 'The Como SL is a lightweight, stylish e-bike perfect for urban commuting. With its clean design and powerful motor, getting around town has never been easier or more fun.',
-    colors: ['#1A1A1A', '#C0C0C0', '#F97316'],
+    colors: ['#1A1A1A', '#F5F0E8', '#F97316'],
     specs: {
       frame: 'E5 Aluminum',
       fork: 'Steel',
