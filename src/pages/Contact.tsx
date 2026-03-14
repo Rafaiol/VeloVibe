@@ -112,7 +112,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="pb-12">
+      <section className="pb-12 pt-12">
         <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((info, index) => (
@@ -152,7 +152,7 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-2xl lg:text-3xl font-display font-bold text-white mb-6">
+              <h2 className="text-2xl lg:text-3xl font-display font-bold text-white mb-6 h-[40px] flex items-center">
                 Send Us a Message
               </h2>
               <p className="text-white/60 mb-8">
@@ -213,7 +213,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-orange transition-colors resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-orange transition-colors resize-none h-[180px]"
                     placeholder="Tell us how we can help you..."
                   />
                 </div>
@@ -250,13 +250,12 @@ export default function Contact() {
               transition={{ duration: 0.6 }}
               className="space-y-8"
             >
-              {/* Map Placeholder */}
-              <div className="bg-dark-gray rounded-2xl overflow-hidden h-[300px] lg:h-[400px] relative">
+              {/* Map Placeholder - Now at the top */}
+              <div className="bg-dark-gray rounded-2xl overflow-hidden h-[200px] lg:h-[220px] relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-dark-gray to-charcoal flex items-center justify-center">
                   <div className="text-center">
-                    <MapPin className="w-16 h-16 text-orange mx-auto mb-4" />
-                    <p className="text-white font-semibold text-lg">VeloVibe Headquarters</p>
-                    <p className="text-white/60">123 Cycling Street, San Francisco, CA</p>
+                    <MapPin className="w-10 h-10 text-orange mx-auto mb-2" />
+                    <p className="text-white font-semibold text-sm">VeloVibe Headquarters</p>
                   </div>
                 </div>
                 {/* Decorative Grid */}
@@ -268,15 +267,15 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Quick Links */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+              {/* Quick Links - FAQ - Ends exactly with the message bar */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 h-[280px]">
                 <h3 className="text-white font-semibold text-lg mb-4">Frequently Asked Questions</h3>
                 <ul className="space-y-3">
                   {faqs.map((question, index) => (
                     <li key={index}>
                       <button 
                         onClick={() => alert(`FAQ: ${question}\n\nAnswer: Please contact us for more information about this topic.`)}
-                        className="text-white/60 hover:text-orange text-sm text-left transition-colors w-full text-left"
+                        className="text-white/60 hover:text-orange text-sm text-left transition-colors w-full"
                       >
                         {question}
                       </button>
@@ -285,8 +284,8 @@ export default function Contact() {
                 </ul>
               </div>
 
-              {/* Social Links */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+              {/* Social Links - Aligned with "Send Message" button area */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 h-auto">
                 <h3 className="text-white font-semibold text-lg mb-4">Follow Us</h3>
                 <div className="flex flex-wrap gap-3">
                   {['Facebook', 'Instagram', 'Twitter', 'YouTube'].map((social) => (
