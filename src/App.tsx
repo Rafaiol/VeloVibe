@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
+import CustomCursor from '@/components/CustomCursor';
 import Home from '@/pages/Home';
 import Shop from '@/pages/Shop';
 import ProductDetail from '@/pages/ProductDetail';
@@ -127,6 +128,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-charcoal">
+        <CustomCursor />
         <ScrollToTop />
         <Header />
         <main>

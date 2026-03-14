@@ -154,6 +154,7 @@
 @layer base {
   * {
     @apply border-border;
+    cursor: none !important; /* Force hide default cursor everywhere */
   }
   html {
     scroll-behavior: smooth;
