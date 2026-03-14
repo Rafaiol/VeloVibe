@@ -6,6 +6,7 @@ import Bike3DViewer from '@/components/Bike3DViewer';
 import ProductCard from '@/components/ProductCard';
 import StarRating from '@/components/StarRating';
 import { products } from '@/data/products';
+import { useCartStore } from '@/store/useCartStore';
 import {
   Accordion,
   AccordionContent,
@@ -19,6 +20,7 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const { addItem } = useCartStore();
 
   const product = products.find((p) => p.id === id);
   const suggestedProducts = products.filter((p) => p.id !== id).slice(0, 6);
@@ -43,6 +45,7 @@ export default function ProductDetail() {
   }
 
   const handleAddToCart = () => {
+    addItem(product, quantity, product.colors[selectedColor]);
     setAddedToCart(true);
     setTimeout(() => {
       setAddedToCart(false);
@@ -50,6 +53,7 @@ export default function ProductDetail() {
   };
 
   const handleCheckout = () => {
+    addItem(product, quantity, product.colors[selectedColor]);
     navigate('/checkout');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

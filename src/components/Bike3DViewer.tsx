@@ -1,7 +1,7 @@
 import { useRef, useState, Suspense, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, ContactShadows, useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
+import { MathUtils, Group, Mesh, MeshStandardMaterial, PCFShadowMap } from 'three';
 
 interface BikeModelProps {
   rotation: number;
@@ -9,14 +9,14 @@ interface BikeModelProps {
 }
 
 function BikeModel({ rotation, color }: BikeModelProps) {
-  const groupRef = useRef<THREE.Group>(null);
-  const { scene } = useGLTF('/bikes/mountain_bike.glb') as unknown as { scene: THREE.Group };
+  const groupRef = useRef<Group>(null);
+  const { scene } = useGLTF('/bikes/mountain_bike.glb') as unknown as { scene: Group };
   
   // Deep clone scene and materials to avoid shared state across multiple viewers
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
     clone.traverse((obj) => {
-      const mesh = obj as THREE.Mesh;
+      const mesh = obj as Mesh;
       if (mesh.isMesh && mesh.material) {
         if (Array.isArray(mesh.material)) {
           mesh.material = mesh.material.map(m => m.clone());
@@ -32,7 +32,7 @@ function BikeModel({ rotation, color }: BikeModelProps) {
 
   useFrame(() => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
+      groupRef.current.rotation.y = MathUtils.lerp(
         groupRef.current.rotation.y,
         (rotation * Math.PI) / 180,
         0.1
@@ -43,12 +43,12 @@ function BikeModel({ rotation, color }: BikeModelProps) {
   // Apply the selected color
   useEffect(() => {
     clonedScene.traverse((obj) => {
-      const mesh = obj as THREE.Mesh;
+      const mesh = obj as Mesh;
       if (mesh.isMesh && mesh.material) {
         const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
         materials.forEach(mat => {
           if (['material', 'material_1', 'material_3', 'material_5', 'Orange'].includes(mat.name)) {
-            const m = mat as THREE.MeshStandardMaterial;
+            const m = mat as MeshStandardMaterial;
             m.color.set(color);
             m.roughness = 0.3;
             m.metalness = 0.7;
@@ -83,12 +83,15 @@ export default function Bike3DViewer({ color }: Bike3DViewerProps) {
     <div className="relative w-full h-[400px] md:h-[600px] group/viewer">
       {/* 3D Canvas */}
       <Canvas
-        shadows
-        onCreated={(state) => {
-          state.gl.shadowMap.type = THREE.PCFShadowMap;
-        }}
+        shadows={{ type: PCFShadowMap }}
         camera={{ position: [0, 1.5, 4], fov: 40 }}
         className="bg-transparent"
+        gl={{ 
+          powerPreference: "high-performance",
+          antialias: true,
+          stencil: false,
+          depth: true,
+        }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.7} />

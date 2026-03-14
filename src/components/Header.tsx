@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, User, ShoppingCart, Menu, X } from 'lucide-react';
+import { useCartStore } from '@/store/useCartStore';
+import CartDrawer from './CartDrawer';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -15,6 +17,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { getTotalItems, setIsOpen } = useCartStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,13 +89,22 @@ export default function Header() {
                 <User className="w-5 h-5" />
               </button>
               <button 
-                onClick={() => handleNavClick('/checkout')}
+                onClick={() => setIsOpen(true)}
                 className="p-2 text-white/80 hover:text-white transition-colors relative"
               >
                 <ShoppingCart className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-orange text-white text-xs rounded-full flex items-center justify-center">
-                  0
-                </span>
+                <AnimatePresence>
+                  {getTotalItems() > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute -top-1 -right-1 w-4 h-4 bg-orange text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(249,115,22,0.4)]"
+                    >
+                      {getTotalItems()}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
               
               {/* Mobile Menu Button */}
@@ -106,6 +118,8 @@ export default function Header() {
           </div>
         </div>
       </motion.header>
+
+      <CartDrawer />
 
       {/* Mobile Menu */}
       <AnimatePresence>

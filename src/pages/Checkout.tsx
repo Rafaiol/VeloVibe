@@ -2,30 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronLeft, CreditCard, Truck, Shield, Check, Minus, Plus, Trash2, ShoppingCart } from 'lucide-react';
-
-// Sample cart items - in a real app, this would come from a cart context/state
-const sampleCartItems = [
-  {
-    id: '1',
-    name: 'Specialized Stumpjumper EVO',
-    price: 5200,
-    quantity: 1,
-    image: '/bikes/mountain-bike.png',
-    color: 'Silver',
-  },
-  {
-    id: '3',
-    name: 'Specialized Tarmac SL8',
-    price: 6800,
-    quantity: 1,
-    image: '/bikes/road-bike.png',
-    color: 'Yellow/Black',
-  },
-];
+import { useCartStore } from '@/store/useCartStore';
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState(sampleCartItems);
+  const { items: cartItems, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
   const [step, setStep] = useState<'cart' | 'shipping' | 'payment'>('cart');
   const [formData, setFormData] = useState({
     email: '',
@@ -41,24 +22,10 @@ export default function Checkout() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subtotal > 5000 ? 0 : 150;
+  const subtotal = getTotalPrice();
+  const shipping = subtotal > 5000 || subtotal === 0 ? 0 : 150;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
-
-  const updateQuantity = (id: string, delta: number) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -78,6 +45,7 @@ export default function Checkout() {
       await new Promise(resolve => setTimeout(resolve, 2000));
       setIsProcessing(false);
       setIsComplete(true);
+      clearCart();
     }
   };
 
@@ -202,31 +170,37 @@ export default function Checkout() {
                   ) : (
                     cartItems.map((item) => (
                       <motion.div
-                        key={item.id}
+                        key={`${item.product.id}-${item.selectedColor}`}
                         layout
                         className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 flex gap-4 sm:gap-6"
                       >
                         <img
-                          src={item.image}
-                          alt={item.name}
+                          src={item.product.image}
+                          alt={item.product.name}
                           className="w-24 h-24 sm:w-32 sm:h-32 object-contain bg-white/5 rounded-xl"
                         />
                         <div className="flex-1">
                           <div className="flex justify-between items-start mb-2">
-                            <h3 className="text-white font-semibold text-lg">{item.name}</h3>
+                            <h3 className="text-white font-semibold text-lg">{item.product.name}</h3>
                             <button
-                              onClick={() => removeItem(item.id)}
+                              onClick={() => removeItem(item.product.id, item.selectedColor)}
                               className="text-white/40 hover:text-red-500 transition-colors"
                             >
                               <Trash2 className="w-5 h-5" />
                             </button>
                           </div>
-                          <p className="text-white/60 text-sm mb-4">Color: {item.color}</p>
+                          <div className="flex items-center gap-2 mb-4">
+                            <div 
+                              className="w-4 h-4 rounded-full border border-white/20" 
+                              style={{ backgroundColor: item.selectedColor }}
+                            />
+                            <p className="text-white/60 text-sm">Selected Color</p>
+                          </div>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center bg-white/10 rounded-full">
                               <button
                                 type="button"
-                                onClick={() => updateQuantity(item.id, -1)}
+                                onClick={() => updateQuantity(item.product.id, item.selectedColor, item.quantity - 1)}
                                 className="w-10 h-10 flex items-center justify-center text-white hover:text-orange transition-colors"
                               >
                                 <Minus className="w-4 h-4" />
@@ -234,14 +208,14 @@ export default function Checkout() {
                               <span className="w-10 text-center text-white font-medium">{item.quantity}</span>
                               <button
                                 type="button"
-                                onClick={() => updateQuantity(item.id, 1)}
+                                onClick={() => updateQuantity(item.product.id, item.selectedColor, item.quantity + 1)}
                                 className="w-10 h-10 flex items-center justify-center text-white hover:text-orange transition-colors"
                               >
                                 <Plus className="w-4 h-4" />
                               </button>
                             </div>
                             <p className="text-xl font-bold text-white">
-                              ${(item.price * item.quantity).toLocaleString()}
+                              ${(item.product.price * item.quantity).toLocaleString()}
                             </p>
                           </div>
                         </div>
@@ -537,16 +511,16 @@ export default function Checkout() {
               {/* Items */}
               <div className="space-y-4 mb-6">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex gap-4">
+                  <div key={`${item.product.id}-${item.selectedColor}`} className="flex gap-4">
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={item.product.image}
+                      alt={item.product.name}
                       className="w-16 h-16 object-contain bg-white/5 rounded-lg"
                     />
                     <div className="flex-1">
-                      <p className="text-white text-sm font-medium line-clamp-1">{item.name}</p>
+                      <p className="text-white text-sm font-medium line-clamp-1">{item.product.name}</p>
                       <p className="text-white/60 text-xs">Qty: {item.quantity}</p>
-                      <p className="text-white text-sm">${(item.price * item.quantity).toLocaleString()}</p>
+                      <p className="text-white text-sm">${(item.product.price * item.quantity).toLocaleString()}</p>
                     </div>
                   </div>
                 ))}

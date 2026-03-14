@@ -5,10 +5,12 @@ import { Filter, SlidersHorizontal, X, ShoppingCart, ArrowRight } from 'lucide-r
 import ProductCard from '@/components/ProductCard';
 import Bike3DViewer from '@/components/Bike3DViewer';
 import { products, categories } from '@/data/products';
+import { useCartStore } from '@/store/useCartStore';
 import type { Product } from '@/data/products';
 
 export default function Shop() {
   const navigate = useNavigate();
+  const { addItem } = useCartStore();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
@@ -308,7 +310,10 @@ export default function Shop() {
                     View Full Details
                     <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                   </button>
-                  <button className="w-full bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
+                  <button 
+                    onClick={() => addItem(previewProduct, 1, previewProduct.colors[previewColorIdx])}
+                    className="w-full bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                  >
                     <ShoppingCart className="w-4 h-4" />
                     Quick Add - ${previewProduct.price.toLocaleString()}
                   </button>
