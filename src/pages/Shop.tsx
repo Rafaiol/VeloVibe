@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, SlidersHorizontal, X, ShoppingCart, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Filter, SlidersHorizontal, ShoppingCart, ArrowRight } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import Bike3DViewer from '@/components/Bike3DViewer';
 import { products, categories } from '@/data/products';
 import { useCartStore } from '@/store/useCartStore';
 import type { Product } from '@/data/products';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -210,62 +218,45 @@ export default function Shop() {
       </section>
 
       {/* 3D Preview Modal */}
-      <AnimatePresence>
-        {previewProduct && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10"
-          >
-            {/* Backdrop */}
-            <div 
-              className="absolute inset-0 bg-charcoal/90 backdrop-blur-xl"
-              onClick={handleClosePreview}
-            />
-
-            {/* Modal Content */}
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-6xl bg-dark-gray border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row"
-            >
+      <Dialog open={!!previewProduct} onOpenChange={(open) => !open && handleClosePreview()}>
+        <DialogContent className="w-[calc(100vw-20px)] lg:max-w-[1400px] p-0 bg-dark-gray border-white/10 rounded-[2rem] overflow-hidden shadow-2xl block h-auto max-h-[95vh] overflow-y-auto lg:overflow-hidden">
+          <DialogHeader className="sr-only">
+            <DialogTitle>{previewProduct?.name} - 3D Preview</DialogTitle>
+            <DialogDescription>
+              Interact with the bike in 3D and customize its appearance.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {previewProduct && (
+            <div className="flex flex-col lg:flex-row h-full lg:min-h-[750px]">
               {/* Left - 3D Viewer */}
-              <div className="flex-1 min-h-[400px] lg:min-h-[600px] relative">
+              <div className="flex-1 min-h-[400px] sm:min-h-[500px] lg:min-h-[750px] relative bg-gradient-to-b from-charcoal/50 to-transparent">
                 <Bike3DViewer color={previewProduct.colors[previewColorIdx]} />
                 
                 {/* Product Name Overlay */}
-                <div className="absolute top-8 left-8">
-                  <span className="text-orange font-display font-bold tracking-widest uppercase text-sm mb-2 block">
+                <div className="absolute top-8 left-8 sm:top-12 sm:left-12">
+                  <span className="text-orange font-display font-bold tracking-widest uppercase text-xs sm:text-base mb-2 sm:mb-3 block">
                     360° Interaction
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-white">
+                  <h3 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tighter">
                     {previewProduct.name}
                   </h3>
                 </div>
               </div>
 
               {/* Right - Controls and Info */}
-              <div className="w-full lg:w-[400px] bg-white/5 p-8 lg:p-12 flex flex-col border-l border-white/10">
-                <button
-                  onClick={handleClosePreview}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors z-10"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
+              <div className="w-full lg:w-[450px] bg-white/[0.02] backdrop-blur-3xl p-8 sm:p-10 lg:p-16 flex flex-col border-t lg:border-t-0 lg:border-l border-white/10 relative">
                 <div className="flex-1">
-                  <div className="mb-8">
-                    <label className="text-white/40 text-xs tracking-widest uppercase font-semibold mb-4 block">
+                  <div className="mb-6 sm:mb-8">
+                    <label className="text-white/40 text-[10px] sm:text-xs tracking-widest uppercase font-semibold mb-3 sm:mb-4 block">
                       Customize Color
                     </label>
-                    <div className="flex gap-3">
+                    <div className="flex gap-2.5 sm:gap-3">
                       {previewProduct.colors.map((color, idx) => (
                         <button
                           key={idx}
                           onClick={() => setPreviewColorIdx(idx)}
-                          className={`w-10 h-10 rounded-full border-2 transition-all ${
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 transition-all ${
                             previewColorIdx === idx
                               ? 'border-orange scale-110 shadow-[0_0_15px_rgba(249,115,22,0.3)]'
                               : 'border-white/10 hover:border-white/30'
@@ -276,9 +267,9 @@ export default function Shop() {
                     </div>
                   </div>
 
-                  <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
-                    <h4 className="text-white font-semibold mb-2">Specifications</h4>
-                    <ul className="space-y-2 text-sm">
+                  <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-white/5 rounded-2xl border border-white/5">
+                    <h4 className="text-white font-semibold text-sm sm:text-base mb-2">Specifications</h4>
+                    <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                       <li className="flex justify-between">
                         <span className="text-white/40">Frame</span>
                         <span className="text-white/80">{previewProduct.specs.frame}</span>
@@ -294,35 +285,35 @@ export default function Shop() {
                     </ul>
                   </div>
 
-                  <p className="text-white/60 text-sm italic mb-10">
+                  <p className="text-white/60 text-xs sm:text-sm italic mb-8 lg:mb-10">
                     "Experience the precision engineering in every detail of the {previewProduct.name}."
                   </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <button 
                     onClick={() => {
                       navigate(`/product/${previewProduct.id}`);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="w-full btn-primary bg-orange hover:bg-orange-hover text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 group/btn"
+                    className="w-full btn-primary bg-orange hover:bg-orange-hover text-white py-3 sm:py-4 rounded-xl font-bold flex items-center justify-center gap-2 group/btn text-sm sm:text-base"
                   >
                     View Full Details
                     <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                   </button>
                   <button 
                     onClick={() => addItem(previewProduct, 1, previewProduct.colors[previewColorIdx])}
-                    className="w-full bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                    className="w-full bg-white/5 hover:bg-white/10 text-white py-3 sm:py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors text-sm sm:text-base"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Quick Add - ${previewProduct.price.toLocaleString()}
                   </button>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 }

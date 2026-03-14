@@ -60,7 +60,7 @@ function BikeModel({ rotation, color }: BikeModelProps) {
   }, [clonedScene, color]);
 
   return (
-    <group ref={groupRef} dispose={null} position={[0, -0.8, 0]} scale={1.8}>
+    <group ref={groupRef} dispose={null} position={[0, -0.2, 0]} scale={1.8}>
       <primitive object={clonedScene} />
     </group>
   );
@@ -107,7 +107,7 @@ export default function Bike3DViewer({ color }: Bike3DViewerProps) {
           <BikeModel rotation={rotation} color={color} />
           
           <ContactShadows
-            position={[0, -0.8, 0]}
+            position={[0, -0.2, 0]}
             opacity={0.6}
             scale={10}
             blur={2.5}

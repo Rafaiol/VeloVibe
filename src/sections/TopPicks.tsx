@@ -58,11 +58,8 @@ export default function TopPicks() {
 
               {/* Content */}
               <div className="p-8 lg:p-12 lg:pl-0">
-                <span className="inline-block px-4 py-1 bg-orange/20 text-orange rounded-full text-sm font-medium mb-4">
-                  Featured
-                </span>
                 <h3 className="text-3xl lg:text-4xl font-display font-bold text-white mb-4">
-                  {featuredProduct.name}
+                  {featuredProduct.name.replace('Specialized ', '')}
                 </h3>
                 <p className="text-white/60 mb-6 max-w-md">
                   {featuredProduct.description}
@@ -90,7 +87,7 @@ export default function TopPicks() {
         {/* Product Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {topProducts.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
+            <ProductCard key={product.id} product={product} index={index} minimal={true} />
           ))}
         </div>
       </div>

@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Play, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Play } from 'lucide-react';
 import { stats } from '@/data/products';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -22,29 +29,22 @@ export default function Hero() {
       </div>
 
       {/* Video Modal */}
-      <AnimatePresence>
-        {showVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
-          >
-            <button
-              onClick={() => setShowVideo(false)}
-              className="absolute top-6 right-6 text-white hover:text-orange transition-colors"
-            >
-              <X className="w-8 h-8" />
-            </button>
-            <div className="w-full max-w-4xl aspect-video bg-dark-gray rounded-2xl flex items-center justify-center">
-              <div className="text-center">
-                <Play className="w-16 h-16 text-orange mx-auto mb-4" />
-                <p className="text-white/60">Video Player Placeholder</p>
-              </div>
+      <Dialog open={showVideo} onOpenChange={setShowVideo}>
+        <DialogContent className="w-[calc(100vw-20px)] lg:max-w-6xl p-0 bg-charcoal border-white/10 overflow-hidden shadow-2xl">
+          <DialogHeader className="sr-only">
+            <DialogTitle>VeloVibe Brand Video</DialogTitle>
+            <DialogDescription>
+              Watch our brand story and the passion behind VeloVibe bikes.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="w-full aspect-video bg-dark-gray flex items-center justify-center relative">
+            <div className="text-center">
+              <Play className="w-16 h-16 text-orange mx-auto mb-4" />
+              <p className="text-white/60">Video Player Placeholder</p>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <div className="relative w-full px-4 sm:px-6 lg:px-12 xl:px-20 py-12 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-160px)]">
@@ -95,17 +95,27 @@ export default function Hero() {
             >
               <button 
                 onClick={handleExploreClick}
-                className="btn-primary flex items-center gap-2 group"
+                className="btn-primary flex items-center gap-2 group relative overflow-hidden"
               >
-                Explore Bikes
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span className="relative z-10">Explore Bikes</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
+                <motion.div 
+                  className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                />
               </button>
               <button 
                 onClick={() => setShowVideo(true)}
-                className="btn-secondary flex items-center gap-2"
+                className="btn-secondary flex items-center gap-2 relative group"
               >
-                <Play className="w-5 h-5" />
-                Watch Video
+                <div className="relative">
+                  <Play className="w-5 h-5 relative z-10" />
+                  <motion.div
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute inset-0 bg-orange rounded-full -z-0"
+                  />
+                </div>
+                <span>Watch Video</span>
               </button>
             </motion.div>
 
@@ -158,45 +168,13 @@ export default function Hero() {
                 src="/bikes/hero-bike.png"
                 alt="Premium Mountain Bike"
                 className="relative z-10 w-full max-w-2xl mx-auto cursor-pointer"
-                onClick={handleExploreClick}
+                onClick={() => {
+                  navigate('/product/2');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               />
-
-              {/* Floating Cards */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                className="absolute top-10 left-0 lg:-left-10 bg-white rounded-2xl shadow-xl p-4 z-20"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-orange/10 rounded-full flex items-center justify-center">
-                    <span className="text-orange text-xl">✦</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal">Premium</div>
-                    <div className="text-sm text-charcoal/60">Quality</div>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="absolute bottom-20 right-0 lg:-right-5 bg-white rounded-2xl shadow-xl p-4 z-20"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center">
-                    <span className="text-green-500 text-xl">✓</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal">Verified</div>
-                    <div className="text-sm text-charcoal/60">Warranty</div>
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         </div>
