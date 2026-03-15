@@ -107,9 +107,11 @@ export default function ProductDetail() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="relative"
+            className="relative min-h-[600px] lg:min-h-[800px] flex items-center justify-center"
           >
-            <Bike3DViewer color={product.colors[selectedColor]} />
+            <div className="w-full h-full absolute inset-0">
+              <Bike3DViewer color={product.colors[selectedColor]} category={product.category} />
+            </div>
 
             {/* Color Selector */}
             <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3">

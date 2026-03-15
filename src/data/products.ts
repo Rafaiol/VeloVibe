@@ -1,7 +1,7 @@
 export interface Product {
   id: string;
   name: string;
-  category: 'mountain' | 'road' | 'city' | 'kids' | 'e-bike';
+  category: 'mountain' | 'road' | 'city' | 'carbon' | 'e-bike';
   price: number;
   rating: number;
   reviews: number;
@@ -203,25 +203,26 @@ export const products: Product[] = [
   },
   {
     id: '8',
-    name: 'Specialized Riprock',
-    category: 'kids',
-    price: 650,
-    rating: 4.8,
+    name: 'Carbon Elite Evo',
+    category: 'carbon',
+    price: 4500,
+    rating: 4.9,
     reviews: 45,
-    image: '/bikes/mountain-bike.png',
-    description: 'The Riprock is the perfect bike for young riders to develop their skills. With wide tires for stability and confidence-inspiring geometry, kids will love exploring on this bike.',
-    colors: ['#F97316', '#1A1A1A', '#F5F0E8'],
+    image: '/bikes/carbon-bike.png',
+    description: 'The Carbon Elite Evo is our flagship performance machine. Built with an ultra-light FACT carbon frame, it offers unmatched stiffness-to-weight ratio for the most demanding riders.',
+    colors: ['#1A1A1A', '#F97316', '#F5F0E8'],
     specs: {
-      frame: 'A1 Aluminum',
-      fork: 'Rigid Steel',
-      drivetrain: 'Shimano Tourney 7-speed',
-      brakes: 'Tektro Mechanical Disc',
-      wheels: '24" Alloy',
-      weight: '10.5 kg'
+      frame: 'FACT 12r Carbon',
+      fork: 'S-Works FACT Carbon',
+      drivetrain: 'Shimano Dura-Ace Di2',
+      brakes: 'Shimano Dura-Ace Hydraulic',
+      wheels: 'Roval Rapide CLX II',
+      weight: '6.5 kg'
     },
     geometry: [
-      { size: '20"', seatTube: '250mm', topTube: '420mm', headTube: '80mm', chainstay: '380mm', wheelbase: '850mm' },
-      { size: '24"', seatTube: '280mm', topTube: '460mm', headTube: '90mm', chainstay: '390mm', wheelbase: '900mm' },
+      { size: 'S', seatTube: '400mm', topTube: '520mm', headTube: '100mm', chainstay: '410mm', wheelbase: '970mm' },
+      { size: 'M', seatTube: '450mm', topTube: '550mm', headTube: '120mm', chainstay: '410mm', wheelbase: '1000mm' },
+      { size: 'L', seatTube: '500mm', topTube: '580mm', headTube: '140mm', chainstay: '410mm', wheelbase: '1030mm' },
     ]
   },
   {
@@ -254,7 +255,7 @@ export const categories = [
   { id: 'mountain', name: 'Mountain Bikes', image: '/images/mountain-ride.jpg' },
   { id: 'road', name: 'Road Bikes', image: '/images/road-ride.jpg' },
   { id: 'city', name: 'City Bikes', image: '/images/city-ride.jpg' },
-  { id: 'kids', name: "Kids' Bikes", image: '/images/family-ride.jpg' },
+  { id: 'carbon', name: 'Carbon Bikes', image: '/bikes/carbon-bike.png' },
   { id: 'e-bike', name: 'E-Bikes', image: '/bikes/hero-bike.png' },
 ];
 

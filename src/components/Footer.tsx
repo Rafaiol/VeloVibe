@@ -13,7 +13,7 @@ const footerLinks = {
     { name: 'Mountain Bikes', path: '/shop' },
     { name: 'Road Bikes', path: '/shop' },
     { name: 'City Bikes', path: '/shop' },
-    { name: "Kids' Bikes", path: '/shop' },
+    { name: "Carbon Bikes", path: '/shop' },
     { name: 'E-Bikes', path: '/shop' },
   ],
 };

@@ -231,7 +231,11 @@ export default function Shop() {
             <div className="flex flex-col lg:flex-row h-full lg:min-h-[750px]">
               {/* Left - 3D Viewer */}
               <div className="flex-1 min-h-[400px] sm:min-h-[500px] lg:min-h-[750px] relative bg-gradient-to-b from-charcoal/50 to-transparent">
-                <Bike3DViewer color={previewProduct.colors[previewColorIdx]} />
+                <Bike3DViewer 
+                  color={previewProduct.colors[previewColorIdx]} 
+                  category={previewProduct.category} 
+                  isPreview={true}
+                />
                 
                 {/* Product Name Overlay */}
                 <div className="absolute top-8 left-8 sm:top-12 sm:left-12">
