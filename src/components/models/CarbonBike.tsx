@@ -2,7 +2,7 @@ import React from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
-import { MeshStandardMaterial } from 'three'
+import { MeshStandardMaterial, Group } from 'three'
 
 interface CarbonBikeProps {
   color: string;
