@@ -23,7 +23,7 @@ export default function ProductCard({ product, index = 0, onSelect3D, minimal = 
           <motion.div
             whileHover={{ y: minimal ? -8 : -12 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="bg-dark-gray/50 backdrop-blur-sm border border-white/5 rounded-3xl overflow-hidden cursor-pointer"
+            className="bg-[#0D0D0D]/90 backdrop-blur-sm border border-white/5 rounded-3xl overflow-hidden cursor-pointer shadow-xl"
           >
             {/* Image Container */}
             <div className="relative aspect-square bg-gradient-to-br from-white/5 to-transparent p-8 flex items-center justify-center overflow-hidden">

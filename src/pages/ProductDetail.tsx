@@ -141,7 +141,7 @@ export default function ProductDetail() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-dark-gray rounded-3xl p-8 lg:p-12 flex items-center justify-center"
+              className="bg-[#0D0D0D] rounded-3xl p-8 lg:p-12 flex items-center justify-center shadow-2xl"
             >
               <img
                 src={product.image}

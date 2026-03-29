@@ -39,7 +39,7 @@ export default function TopPicks() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <div className="bg-dark-gray rounded-3xl overflow-hidden">
+          <div className="bg-[#0D0D0D] rounded-3xl overflow-hidden shadow-2xl">
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               {/* Image */}
               <div className="relative p-8 lg:p-12">
